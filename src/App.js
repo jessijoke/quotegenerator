@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import { random } from 'lodash';
-import './App.css';
-import Button from './components/Button';
+import 'typeface-roboto';
+import { Grid, withStyles } from '@material-ui/core'
+import QuoteMachine from './components/QuoteMachine';
+
+const styles = {
+  container: {
+    alignItems: 'center',
+    display: 'flex',
+    height: '100vh',
+  }
+}
 
 class App extends Component {
   constructor(props) {
@@ -11,7 +20,7 @@ class App extends Component {
       selectedQuoteIndex: null,
     }
     this.assignNewQuoteIndex = this.assignNewQuoteIndex.bind(this);
-    this.selectQuoteIndex = this.selectQuoteIndex.bind(this);
+    this.selectQuoteIndex = this.generateNewQuoteIndex.bind(this);
   }
 
   componentDidMount() {
@@ -22,12 +31,16 @@ class App extends Component {
 
   get selectedQuote() {
     if (!this.state.quotes.length || !Number.isInteger(this.state.selectedQuoteIndex)) {
-      return;
+      return undefined;
     }
     return this.state.quotes[this.state.selectedQuoteIndex];
   }
 
-  selectQuoteIndex() {
+  /**
+   * Returns an integer representing an index in state.quotes
+   * If state.quotes is empty, returns undefined
+   */
+  generateNewQuoteIndex() {
     if (!this.state.quotes.length) {
       return;
     }
@@ -35,18 +48,22 @@ class App extends Component {
   }
 
   assignNewQuoteIndex() {
-    this.setState({ selectedQuoteIndex: this.selectQuoteIndex() });
+    this.setState({ selectedQuoteIndex: this.generateNewQuoteIndex() });
   }
 
   render() {
     console.log(this.state.selectedQuoteIndex);
     return (
-      <div className="App" id="quote-box">
-        { this.selectedQuote ? `"${this.selectedQuote.quote}" - ${this.selectedQuote.author}` : ''}<br />
-        <Button buttonDisplayName="Next Quote" clickHandler={this.assignNewQuoteIndex}/>
-      </div>
+      <Grid className={this.props.classes.container} id="quote-box" justify="center" container>
+        <Grid xs={10} lg={8} item>
+          {
+            this.selectedQuote ? 
+            <QuoteMachine selectedQuote={this.selectedQuote} assignNewQuoteIndex={this.assignNewQuoteIndex}/> : 
+            null}
+        </Grid>
+      </Grid>
     );
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
