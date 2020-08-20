@@ -26,7 +26,7 @@ const QuoteMachine = ({ assignNewQuoteIndex, selectedQuote }) => (
                 <FontAwesomeIcon icon={faTwitter} size="md"></FontAwesomeIcon>
             </IconButton>
             <IconButton
-            id="fb-quote"
+            id="facebook-quote"
             target="_blank"
                 href={`#`}            >
                 <FontAwesomeIcon icon={faFacebook} size="md"></FontAwesomeIcon>
